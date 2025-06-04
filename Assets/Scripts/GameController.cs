@@ -181,6 +181,7 @@ public class GameController : MonoBehaviour
 
         if (isGameOver)
         {
+            playerMove = !playerMove;
             GameOver(winningSide);
         }
         else
@@ -235,11 +236,15 @@ public class GameController : MonoBehaviour
 
             bool emptySpotFound = false;
             int score = 0;
+            int emptyCount = 0;
 
             // check all the rows and columns
             for (int i = 0; i < 3; i++)
             {
                 // check the row
+                score = 0;
+                emptyCount = 0;
+
                 int first = i * 3;
                 int second = first + 1;
                 int third = second + 1;
@@ -250,18 +255,46 @@ public class GameController : MonoBehaviour
 
                 if (score == 2)
                 {
-                    if (buttonList[first].buttonText.text == "") computerSelectButtonIndex = first;
-                    else if (buttonList[second].buttonText.text == "") computerSelectButtonIndex = second;
-                    else if (buttonList[third].buttonText.text == "") computerSelectButtonIndex = third;
+                    if (buttonList[first].buttonText.text == "") { ++emptyCount; computerSelectButtonIndex = first; }
+                    else if (buttonList[second].buttonText.text == "") { ++emptyCount; computerSelectButtonIndex = second; }
+                    else if (buttonList[third].buttonText.text == "") { ++emptyCount; computerSelectButtonIndex = third; }
 
-                    emptySpotFound = true;
-                    break;
+                    if (emptyCount != 0)
+                    {
+                        emptySpotFound = true;
+                        break;
+                    }
+                }
+
+                if (!emptySpotFound)
+                {
+                    score = 0;
+                    emptyCount = 0;
+
+                    if (buttonList[first].buttonText.text == playerSide) ++score;
+                    if (buttonList[second].buttonText.text == playerSide) ++score;
+                    if (buttonList[third].buttonText.text == playerSide) ++score;
+
+                    if (score == 2)
+                    {
+                        if (buttonList[first].buttonText.text == "") { ++emptyCount; computerSelectButtonIndex = first; }
+                        else if (buttonList[second].buttonText.text == "") { ++emptyCount; computerSelectButtonIndex = second; }
+                        else if (buttonList[third].buttonText.text == "") { ++emptyCount; computerSelectButtonIndex = third; }
+
+                        if (emptyCount != 0)
+                        {
+                            emptySpotFound = true;
+                            break;
+                        }
+                    }
                 }
 
                 // check the column
                 if (!emptySpotFound)
                 {
                     score = 0;
+                    emptyCount = 0;
+
                     first = i;
                     second = first + 3;
                     third = second + 3;
@@ -272,12 +305,38 @@ public class GameController : MonoBehaviour
 
                     if (score == 2)
                     {
-                        if (buttonList[first].buttonText.text == "") computerSelectButtonIndex = first;
-                        else if (buttonList[second].buttonText.text == "") computerSelectButtonIndex = second;
-                        else if (buttonList[third].buttonText.text == "") computerSelectButtonIndex = third;
+                        if (buttonList[first].buttonText.text == "") { ++emptyCount; computerSelectButtonIndex = first; }
+                        else if (buttonList[second].buttonText.text == "") { ++emptyCount; computerSelectButtonIndex = second; }
+                        else if (buttonList[third].buttonText.text == "") { ++emptyCount; computerSelectButtonIndex = third; }
 
-                        emptySpotFound = true;
-                        break;
+                        if (emptyCount != 0)
+                        {
+                            emptySpotFound = true;
+                            break;
+                        }
+                    }
+
+                    if (!emptySpotFound)
+                    {
+                        score = 0;
+                        emptyCount = 0;
+
+                        if (buttonList[first].buttonText.text == playerSide) ++score;
+                        if (buttonList[second].buttonText.text == playerSide) ++score;
+                        if (buttonList[third].buttonText.text == playerSide) ++score;
+
+                        if (score == 2)
+                        {
+                            if (buttonList[first].buttonText.text == "") { ++emptyCount; computerSelectButtonIndex = first; }
+                            else if (buttonList[second].buttonText.text == "") { ++emptyCount; computerSelectButtonIndex = second; }
+                            else if (buttonList[third].buttonText.text == "") { ++emptyCount; computerSelectButtonIndex = third; }
+
+                            if (emptyCount != 0)
+                            {
+                                emptySpotFound = true;
+                                break;
+                            }
+                        }
                     }
                 }
             }
@@ -285,6 +344,8 @@ public class GameController : MonoBehaviour
             if (!emptySpotFound)
             {
                 score = 0;
+                emptyCount = 0;
+
                 // check the diagonals
                 if (buttonList[0].buttonText.text == computerSide) ++score;
                 if (buttonList[4].buttonText.text == computerSide) ++score;
@@ -292,28 +353,81 @@ public class GameController : MonoBehaviour
 
                 if (score == 2)
                 {
-                    if (buttonList[0].buttonText.text == "") computerSelectButtonIndex = 0;
-                    else if (buttonList[4].buttonText.text == "") computerSelectButtonIndex = 4;
-                    else if (buttonList[8].buttonText.text == "") computerSelectButtonIndex = 8;
+                    if (buttonList[0].buttonText.text == "") { ++emptyCount; computerSelectButtonIndex = 0; }
+                    else if (buttonList[4].buttonText.text == "") { ++emptyCount; computerSelectButtonIndex = 4; }
+                    else if (buttonList[8].buttonText.text == "") { ++emptyCount; computerSelectButtonIndex = 8; }
 
-                    emptySpotFound = true;
+                    if (emptyCount != 0)
+                    {
+                        emptySpotFound = true;
+                    }
+                }
+
+                if (!emptySpotFound)
+                {
+                    score = 0;
+                    emptyCount = 0;
+
+                    if (buttonList[0].buttonText.text == playerSide) ++score;
+                    if (buttonList[4].buttonText.text == playerSide) ++score;
+                    if (buttonList[8].buttonText.text == playerSide) ++score;
+
+                    if (score == 2)
+                    {
+                        if (buttonList[0].buttonText.text == "") { ++emptyCount; computerSelectButtonIndex = 0; }
+                        else if (buttonList[4].buttonText.text == "") { ++emptyCount; computerSelectButtonIndex = 4; }
+                        else if (buttonList[8].buttonText.text == "") { ++emptyCount; computerSelectButtonIndex = 8; }
+
+                        if (emptyCount != 0)
+                        {
+                            emptySpotFound = true;
+                        }
+                    }
                 }
             }
 
             if (!emptySpotFound)
             {
                 score = 0;
+                emptyCount = 0;
+
                 if (buttonList[2].buttonText.text == computerSide) ++score;
                 if (buttonList[4].buttonText.text == computerSide) ++score;
                 if (buttonList[6].buttonText.text == computerSide) ++score;
 
                 if (score == 2)
                 {
-                    if (buttonList[2].buttonText.text == "") computerSelectButtonIndex = 2;
-                    else if (buttonList[4].buttonText.text == "") computerSelectButtonIndex = 4;
-                    else if (buttonList[6].buttonText.text == "") computerSelectButtonIndex = 6;
+                    if (buttonList[2].buttonText.text == "") { ++emptyCount; computerSelectButtonIndex = 2; }
+                    else if (buttonList[4].buttonText.text == "") { ++emptyCount; computerSelectButtonIndex = 4; }
+                    else if (buttonList[6].buttonText.text == "") { ++emptyCount; computerSelectButtonIndex = 6; }
 
-                    emptySpotFound = true;
+                    if (emptyCount != 0)
+                    {
+                        emptySpotFound = true;
+                    }
+                }
+
+                if (!emptySpotFound)
+                {
+                    
+                    score = 0;
+                    emptyCount = 0;
+
+                    if (buttonList[2].buttonText.text == playerSide) ++score;
+                    if (buttonList[4].buttonText.text == playerSide) ++score;
+                    if (buttonList[6].buttonText.text == playerSide) ++score;
+
+                    if (score == 2)
+                    {
+                        if (buttonList[2].buttonText.text == "") { ++emptyCount; computerSelectButtonIndex = 2; }
+                        else if (buttonList[4].buttonText.text == "") { ++emptyCount; computerSelectButtonIndex = 4; }
+                        else if (buttonList[6].buttonText.text == "") { ++emptyCount; computerSelectButtonIndex = 6; }
+
+                        if (emptyCount != 0)
+                        {
+                            emptySpotFound = true;
+                        }
+                    }
                 }
             }
 
@@ -329,7 +443,7 @@ public class GameController : MonoBehaviour
             while (!emptySpotFound)
             {
 
-                computerSelectButtonIndex = Random.Range(0, 8);
+                computerSelectButtonIndex = Random.Range(0, 9);
                 if (buttonList[computerSelectButtonIndex].GetComponentInChildren<TextMeshProUGUI>().text == "")
                 {
                     emptySpotFound = true;
